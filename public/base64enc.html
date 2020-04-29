@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+        <title>Base64 encoder</title>
+
+        <!-- CSS  -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/themes/prism.min.css">
+
+        <style type="text/css">
+            .material-icons {
+                vertical-align: bottom;
+            }
+            textarea {
+                font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+            }
+            #input, #output, #base64_text, #input_text {
+                height: 65vh;
+                font: 14px/1.5em 'Consolas', 'Menlo', 'Monaco', 'Courier New', monospace;
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="indigo lighten-1" role="navigation">
+            <div class="nav-wrapper container">
+                <a id="logo-container" href="#!" class="brand-logo">Base64 encoder</a>
+                <a data-target="mobile-demo" href="#" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="base64dec.html">Base64 decoder</a></li>
+                </ul>
+            </div>
+        </nav>
+        <ul class="sidenav" id="mobile-demo">
+            <li><a href="base64.html">Base64</a></li>
+            <li><a href="url.html">URL</a></li>
+            <li><a href="json.html">JSON</a></li>
+        </ul>
+
+        <div class="section no-pad-bot" id="index-banner">
+                <div class="row">
+                    <form class="col s12">
+                        <div class="row">
+                            <div class="switch">
+                                 Enter a line break with 76 characters <label>
+                                    Off
+                                    <input type="checkbox" id="split_line" value="on">
+                                    <span class="lever"></span>
+                                    On
+                                </label>
+                            </div>
+                        </div>
+                        <div class="center-align input-field col s5">
+                            <i class="material-icons left-align">input</i> Input text
+                        </div>
+
+                        <div class="center-align input-field col s2">
+                            <i class="material-icons">arrow_forward</i>
+                        </div>
+                        <div class="center-align input-field col s5">
+                            Base64
+                        </div>
+                        <div class="input-field col s6">
+                            <textarea onKeyup="base64encode();" id="input_text" class="materialize-textarea"></textarea>
+                            <label for="base64_text">Input text</label>
+                        </div>
+                        <div class="col s6">
+                            <pre id="base64_text" class="language-markup"><code class="language-markup"></code></pre>
+                        </div>
+                    </form>
+                </div>
+        </div>
+
+        <footer class="page-footer indigo">
+            <div class="footer-copyright">
+                <div class="container">
+                    " Made by "
+                    <a class="indigo-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+                </div>
+                <div class="container">
+                    <p class="muted credit"><a href="https://github.com/masahide/toolkit">Fork me on GitHub.</a></p>
+                </div>
+            </div>
+        </footer>
+
+        <!--  Scripts-->
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/prism.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $('select').formSelect();
+            });
+        </script>
+        <script src="wasm_exec.js"></script>
+        <script>
+            if (!WebAssembly.instantiateStreaming) {
+                // polyfill
+                WebAssembly.instantiateStreaming = async (resp, importObject) => {
+                    const source = await (await resp).arrayBuffer();
+                    return await WebAssembly.instantiate(source, importObject);
+                };
+            }
+
+            const go = new Go();
+            WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then(
+                result => {
+                    go.run(result.instance);
+                }
+            );
+        </script>
+
+    </body>
+</html>
+
