@@ -7,15 +7,34 @@ import (
 	"syscall/js"
 )
 
-var document = js.Global().Get("document")
+const (
+	base64LineLength = 76
+)
 
-func getElementByID(targetID string) js.Value {
-	return document.Call("getElementById", targetID)
+type base64conv struct {
+	input     js.Value
+	output    js.Value
+	splitLine js.Value
 }
 
-func base64encode(this js.Value, args []js.Value) interface{} {
-	value := getElementByID(args[1].String()).Get("value").String()
-	getElementByID(args[0].String()).Set("innerHTML", value)
+func splitLine(s string, size int) string {
+	res := ""
+	for ; size > 0; s = s[size:] {
+		if len(s) < size {
+			size = len(s)
+		}
+		res += s[:size] + "\n"
+	}
+	return res
+}
+
+func (b *base64conv) encode(this js.Value, args []js.Value) interface{} {
+	s := b.input.Get("value").String()
+	base64str := base64.StdEncoding.EncodeToString([]byte(s))
+	if b.splitLine.Get("checked").Bool() {
+		base64str = splitLine(base64str, base64LineLength)
+	}
+	b.output.Set("innerHTML", base64str)
 	return nil
 }
 func decode(in string) string {
@@ -25,25 +44,30 @@ func decode(in string) string {
 	}
 	return string(text)
 }
-func base64decode(this js.Value, args []js.Value) interface{} {
-	input := getElementByID(args[1].String()).Get("value").String()
+func (b *base64conv) decode(this js.Value, args []js.Value) interface{} {
+	input := b.input.Get("value").String()
 	value := html.EscapeString(decode(input))
-	getElementByID(args[0].String()).Set("innerHTML", value)
+	b.output.Set("innerHTML", value)
 	fmt.Printf("value:%s\n", value)
-	return nil
-}
-func add(this js.Value, args []js.Value) interface{} {
-	js.Global().Set("output", js.ValueOf(args[0].Int()+args[1].Int()))
-	fmt.Printf("%v\n", js.ValueOf(args[0].Int()+args[1].Int()))
 	return nil
 }
 
 func registerCallbacks() {
-	//obj := getElementByID("base64_text")
-	//obj.Call("addEventListener", "keyup", base64decode)
-	js.Global().Set("base64encode", js.FuncOf(base64encode))
-	js.Global().Set("base64decode", js.FuncOf(base64decode))
-	js.Global().Set("add", js.FuncOf(add))
+	var document = js.Global().Get("document")
+	getElementByID := func(targetID string) js.Value {
+		return document.Call("getElementById", targetID)
+	}
+	dec := &base64conv{
+		input:  getElementByID("base64_text"),
+		output: getElementByID("decode_text"),
+	}
+	js.Global().Set("base64decode", js.FuncOf(dec.decode))
+	enc := &base64conv{
+		input:     getElementByID("input_text"),
+		output:    getElementByID("base64_text"),
+		splitLine: getElementByID("split_line"),
+	}
+	js.Global().Set("base64encode", js.FuncOf(enc.encode))
 }
 
 func main() {

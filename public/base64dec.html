@@ -29,9 +29,7 @@
                 <a id="logo-container" href="#!" class="brand-logo">Base64 decoder</a>
                 <a data-target="mobile-demo" href="#" class="sidenav-trigger"><i class="material-icons">menu</i></a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a href="base64.html">Base64</a></li>
-                    <li><a href="url.html">URL</a></li>
-                    <li><a href="json.html">JSON</a></li>
+                    <li><a href="base64enc.html">Base64 encoder</a></li>
                 </ul>
             </div>
         </nav>
@@ -123,11 +121,11 @@
                             <i class="material-icons">arrow_forward</i>
                         </div>
                         <div class="center-align input-field col s5">
-                            <i class="material-icons left-align">text_fields</i> Output
+                            Output
                         </div>
                         <div class="input-field col s6">
                             <textarea onKeyup="base64decode('decode_text','base64_text');" id="base64_text" class="materialize-textarea"></textarea>
-                            <label for="base64_text">Input BASE64 text</label>
+                            <label for="base64_text">Input Base64 text</label>
                         </div>
                         <div class="col s6">
                             <pre id="decode_text" class="language-markup"><code class="language-markup"></code></pre>
@@ -143,7 +141,7 @@
                     <a class="indigo-text text-lighten-3" href="http://materializecss.com">Materialize</a>
                 </div>
                 <div class="container">
-                    <p class="muted credit"><a href="https://github.com/masahide/inet-ip.info">Fork me on GitHub.</a></p>
+                    <p class="muted credit"><a href="https://github.com/masahide/toolkit">Fork me on GitHub.</a></p>
                 </div>
             </div>
         </footer>
@@ -173,7 +171,6 @@
                     go.run(result.instance);
                 }
             );
-
         </script>
 
     </body>
