@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+        <title>Base64 decoder</title>
+
+        <!-- CSS  -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/themes/prism.min.css">
+
+        <style type="text/css">
+            .material-icons {
+                vertical-align: bottom;
+            }
+            textarea {
+                font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+            }
+            #input, #output, #base64_text, #decode_text {
+                height: 65vh;
+                font: 14px/1.5em 'Consolas', 'Menlo', 'Monaco', 'Courier New', monospace;
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="indigo lighten-1" role="navigation">
+            <div class="nav-wrapper container">
+                <a id="logo-container" href="#!" class="brand-logo">Base64 decoder</a>
+                <a data-target="mobile-demo" href="#" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="base64.html">Base64</a></li>
+                    <li><a href="url.html">URL</a></li>
+                    <li><a href="json.html">JSON</a></li>
+                </ul>
+            </div>
+        </nav>
+        <ul class="sidenav" id="mobile-demo">
+            <li><a href="base64.html">Base64</a></li>
+            <li><a href="url.html">URL</a></li>
+            <li><a href="json.html">JSON</a></li>
+        </ul>
+
+        <div class="section no-pad-bot" id="index-banner">
+                <div class="row">
+                    <form class="col s12">
+                        <div class="row">
+                            <div class="input-field col s12 m6">
+                                <i class="material-icons prefix">text_format</i>
+                                <select disabled>
+                                        <optgroup label="CPXXX">
+                                            <option value="CP850">CP850</option>
+                                            <option value="CP866">CP866</option>
+                                            <option value="CP932">CP932</option>
+                                            <option value="CP936">CP936</option>
+                                            <option value="CP950">CP950</option>
+                                            <option value="CP50220">CP50220</option>
+                                            <option value="CP50221">CP50221</option>
+                                            <option value="CP50222">CP50222</option>
+                                            <option value="CP51932">CP51932</option>
+                                        </optgroup>
+                                        <optgroup label="EUC">
+                                            <option value="EUC-CN">EUC-CN</option>
+                                            <option value="EUC-JP">EUC-JP</option>
+                                            <option value="EUC-KR">EUC-KR</option>
+                                            <option value="EUC-TW">EUC-TW</option>
+                                        </optgroup>
+                                        <optgroup label="ISO">
+                                            <option value="ISO-2022-JP">ISO-2022-JP</option>
+                                            <option value="ISO-2022-KR">ISO-2022-KR</option>
+                                            <option value="ISO-8859-3">ISO-8859-3</option>
+                                            <option value="ISO-8859-4">ISO-8859-4</option>
+                                            <option value="ISO-8859-5">ISO-8859-5</option>
+                                            <option value="ISO-8859-7">ISO-8859-7</option>
+                                            <option value="ISO-8859-8">ISO-8859-8</option>
+                                            <option value="ISO-8859-9">ISO-8859-9</option>
+                                            <option value="ISO-8859-10">ISO-8859-10</option>
+                                            <option value="ISO-8859-13">ISO-8859-13</option>
+                                            <option value="ISO-8859-14">ISO-8859-14</option>
+                                            <option value="ISO-8859-16">ISO-8859-16</option>
+                                        </optgroup>
+                                        <optgroup label="UCS">
+                                            <option value="UCS-2">UCS-2</option>
+                                            <option value="UCS-2BE">UCS-2BE</option>
+                                            <option value="UCS-2LE">UCS-2LE</option>
+                                            <option value="UCS-4">UCS-4</option>
+                                            <option value="UCS-4BE">UCS-4BE</option>
+                                            <option value="UCS-4LE">UCS-4LE</option>
+                                            <option value="UHC">UHC</option>
+                                        </optgroup>
+                                        <optgroup label="UTF">
+                                            <option value="UTF-8" selected>UTF-8</option>
+                                            <option value="UTF-7">UTF-7</option>
+                                            <option value="UTF-16">UTF-16</option>
+                                            <option value="UTF-16BE">UTF-16BE</option>
+                                            <option value="UTF-16LE">UTF-16LE</option>
+                                            <option value="UTF-32">UTF-32</option>
+                                            <option value="UTF-32BE">UTF-32BE</option>
+                                            <option value="UTF-32LE">UTF-32LE</option>
+                                            <option value="UTF7-IMAP">UTF7-IMAP</option>
+                                        </optgroup>
+                                        <optgroup label="Others">
+                                            <option value="Windows-1251">Windows-1251</option>
+                                            <option value="Windows-1254">Windows-1254</option>
+                                            <option value="ArmSCII-8">ArmSCII-8</option>
+                                            <option value="BIG-5">BIG-5</option>
+                                            <option value="GB18030">GB18030</option>
+                                            <option value="HZ">HZ</option>
+                                            <option value="KOI8-R">KOI8-R</option>
+                                            <option value="KOI8-U">KOI8-U</option>
+                                            <option value="JIS">JIS</option>
+                                            <option value="SJIS">SJIS</option>
+                                        </optgroup>
+                                        </select>
+                                        <label>Source character set.</label>
+                                        </div>
+                                        </div>
+                        <div class="center-align input-field col s5">
+                            <i class="material-icons left-align">input</i> Base64 text
+                        </div>
+
+                        <div class="center-align input-field col s2">
+                            <i class="material-icons">arrow_forward</i>
+                        </div>
+                        <div class="center-align input-field col s5">
+                            <i class="material-icons left-align">text_fields</i> Output
+                        </div>
+                        <div class="input-field col s6">
+                            <textarea onKeyup="base64decode('decode_text','base64_text');" id="base64_text" class="materialize-textarea"></textarea>
+                            <label for="base64_text">Input BASE64 text</label>
+                        </div>
+                        <div class="col s6">
+                            <pre id="decode_text" class="language-markup"><code class="language-markup"></code></pre>
+                        </div>
+                    </form>
+                </div>
+        </div>
+
+        <footer class="page-footer indigo">
+            <div class="footer-copyright">
+                <div class="container">
+                    " Made by "
+                    <a class="indigo-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+                </div>
+                <div class="container">
+                    <p class="muted credit"><a href="https://github.com/masahide/inet-ip.info">Fork me on GitHub.</a></p>
+                </div>
+            </div>
+        </footer>
+
+        <!--  Scripts-->
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/prism.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $('select').formSelect();
+            });
+        </script>
+        <script src="wasm_exec.js"></script>
+        <script>
+            if (!WebAssembly.instantiateStreaming) {
+                // polyfill
+                WebAssembly.instantiateStreaming = async (resp, importObject) => {
+                    const source = await (await resp).arrayBuffer();
+                    return await WebAssembly.instantiate(source, importObject);
+                };
+            }
+
+            const go = new Go();
+            WebAssembly.instantiateStreaming(fetch("lib.wasm"), go.importObject).then(
+                result => {
+                    go.run(result.instance);
+                }
+            );
+
+        </script>
+
+    </body>
+</html>
+
