@@ -10,6 +10,7 @@ GOROOT=$$(go env GOROOT)
 
 build:
 	go get ./...
+	go env
 	go build -o $(dist)/main.wasm $(src)
 	cp "$(GOROOT)/misc/wasm/wasm_exec.js" $(dist)/
 
